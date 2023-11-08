@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Back from "./Photos/back.png";
-import "./App.css";
+import Back from "../Photos/back.png";
 import {
   Button,
   CardMedia,
@@ -9,10 +8,11 @@ import {
   DialogTitle,
   Typography,
 } from "@mui/material";
-import { Deck } from "./Data/Deck";
-import { Tokens } from "./Data/Tokens";
+import { Deck } from "../Data/Deck";
+import { Tokens } from "../Data/Tokens";
+import { Link } from "react-router-dom";
 
-function App() {
+function Game() {
   const copyDeck = [...Deck];
 
   const [onPlayDeck, setOnPlayDeck] = useState(copyDeck);
@@ -248,7 +248,9 @@ function App() {
 
         <DialogActions>
           {bank <= 0 ? (
-            <Button>Continue</Button>
+            <Link to="/">
+              <Button>Continue</Button>
+            </Link>
           ) : (
             <Button onClick={handleContinue}>Continue</Button>
           )}
@@ -258,4 +260,4 @@ function App() {
   );
 }
 
-export default App;
+export default Game;

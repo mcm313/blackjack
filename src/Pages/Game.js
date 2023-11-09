@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import Back from "../Photos/back.png";
-import {
-  Button,
-  CardMedia,
-  Dialog,
-  DialogActions,
-  DialogTitle,
-  Typography,
-} from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { Deck } from "../Data/Deck";
-import { Tokens } from "../Data/Tokens";
-import { Link } from "react-router-dom";
+import cards from "../Photos/cards.png";
+
+import Player from "../Components/Player";
+import Dealer from "../Components/Dealer";
+import WinnerDialog from "../Components/WinnerDialog";
+import Bank from "../Components/Bank";
+import DealNavi from "../Components/DealNavi";
+import HitStandNavi from "../Components/HitStandNavi";
+
+import "../main.css";
 
 function Game() {
   const copyDeck = [...Deck];
@@ -25,13 +25,12 @@ function Game() {
   const [endGame, setEndGame] = useState(false);
 
   const [winner, setWinner] = useState("");
-  const [open, setOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(true);
 
   useEffect(() => {
     calculateWinner();
   }, [playerHand, endGame]);
-
-  const showedTokens = Tokens.filter((token) => token <= bank);
 
   const handleToken = (value) => {
     const updateBet = bet + value;
@@ -71,6 +70,7 @@ function Game() {
     setPlayerHand([...playerHand, randomCard(), randomCard()]);
     setDealerHand([...dealerHand, randomCard(), randomCard()]);
     setOnplay(true);
+    setDrawerOpen(false);
   };
 
   const handleHit = () => {
@@ -101,7 +101,8 @@ function Game() {
     setOnStand(false);
     setEndGame(false);
     setWinner("");
-    setOpen(false);
+    setDialogOpen(false);
+    setDrawerOpen(true);
   };
 
   const handleWin = () => {
@@ -135,128 +136,79 @@ function Game() {
     } else if (totalChecker(playerHand) > 21) {
       setOnStand(true);
       setWinner("Dealer");
-      setOpen(true);
+      setDialogOpen(true);
       handleLost();
     } else if (totalChecker(dealerHand) > 21 && endGame) {
       setWinner("You");
-      setOpen(true);
+      setDialogOpen(true);
       handleWin();
     } else if (
       totalChecker(playerHand) === totalChecker(dealerHand) &&
       endGame
     ) {
       setWinner("Push");
-      setOpen(true);
+      setDialogOpen(true);
       handleWin();
     } else if (totalChecker(playerHand) < totalChecker(dealerHand) && endGame) {
       setWinner("Dealer");
-      setOpen(true);
+      setDialogOpen(true);
       handleLost();
     } else if (totalChecker(playerHand) > totalChecker(dealerHand) && endGame) {
       setWinner("You");
-      setOpen(true);
+      setDialogOpen(true);
       handleWin();
     }
   };
 
   return (
-    <>
-      <CardMedia component="img" sx={{ width: 50 }} image={Back} alt="deck" />
-      <Typography variant="body1">{onPlayDeck.length}</Typography>
-      <br></br>
-      <br></br>
-      {!onPlay ? (
-        <>
-          <Typography variant="body1">Bank</Typography>
-          <Typography variant="body1">{bank}</Typography>
-          <br></br>
-          {bank > 0 ? (
-            <Button onClick={() => handleToken(bank)}>ALL IN</Button>
-          ) : (
-            <Button onClick={() => handleClear(bet)}>CLEAR BET</Button>
-          )}
-          <br></br>
-          <br></br>
-          <Typography variant="body1">Bet</Typography>
-          <Typography variant="body1">{bet}</Typography>
-          <br></br>
-          {showedTokens.map((token) => (
-            <Button onClick={() => handleToken(token)}>{token}</Button>
-          ))}
-          <br></br>
-          <Button onClick={handleDeal}>Deal</Button>
-        </>
-      ) : (
-        <>
-          <Typography variant="body1">Bank</Typography>
-          <Typography variant="body1">{bank}</Typography>
-          <br></br>
-          <Typography variant="body1">Bet</Typography>
-          <Typography variant="body1">{bet}</Typography>
-          <br></br>
-          <Button onClick={handleHit}>Hit</Button>
-          <Button onClick={handleStand}>Stand</Button>
-        </>
-      )}
-      <br></br>
-      <br></br>
-      <br></br>
-      <Typography variant="body1">Player</Typography>
-      {onPlay && (
-        <>
-          <Typography variant="caption">{totalChecker(playerHand)}</Typography>
-          {playerHand.map((card) => (
-            <Typography variant="body1">{card.name}</Typography>
-          ))}
-        </>
-      )}
-      <br></br>
-      <br></br>
-      <br></br>
-      <Typography variant="body1">Dealer</Typography>
-      {onPlay && (
-        <>
-          {onStand ? (
-            <>
-              <Typography variant="caption">
-                {totalChecker(dealerHand)}
-              </Typography>
-              {dealerHand.map((card) => (
-                <Typography variant="body1">{card.name}</Typography>
-              ))}
-            </>
-          ) : (
-            <>
-              <Typography variant="caption">{dealerHand[1].value}</Typography>
-              <Typography variant="body1">{dealerHand[1].name}</Typography>
-            </>
-          )}
-        </>
-      )}
-      <Dialog
-        open={open}
-        // TransitionComponent={Transition}
-        keepMounted
+    <Grid container className="customMain" alignItems="start" p={3}>
+      <Grid
+        item
+        xs={12}
+        sx={{ display: "inline-flex" }}
+        justifyContent="end"
+        alignItems="center"
       >
-        {winner === "You" ? (
-          <DialogTitle>You win!</DialogTitle>
-        ) : winner === "Push" ? (
-          <DialogTitle>Push!</DialogTitle>
-        ) : (
-          <DialogTitle>Dealer wins!</DialogTitle>
+        <Typography variant="body1">{onPlayDeck.length}</Typography>
+        <img src={cards} width="45px" />
+      </Grid>
+      <Grid item xs={12}>
+        {onPlay && (
+          <Dealer
+            dealerHand={dealerHand}
+            totalChecker={totalChecker}
+            onStand={onStand}
+          />
         )}
-
-        <DialogActions>
-          {bank <= 0 ? (
-            <Link to="/">
-              <Button>Continue</Button>
-            </Link>
-          ) : (
-            <Button onClick={handleContinue}>Continue</Button>
-          )}
-        </DialogActions>
-      </Dialog>
-    </>
+      </Grid>
+      {!onPlay ? (
+        <DealNavi bet={bet} handleDeal={handleDeal} />
+      ) : (
+        <HitStandNavi
+          bet={bet}
+          handleHit={handleHit}
+          handleStand={handleStand}
+        />
+      )}
+      <Grid item xs={12}>
+        {onPlay && (
+          <Player playerHand={playerHand} totalChecker={totalChecker} />
+        )}
+      </Grid>
+      <Bank
+        bank={bank}
+        bet={bet}
+        handleToken={handleToken}
+        handleClear={handleClear}
+        open={drawerOpen}
+      />
+      <WinnerDialog
+        winner={winner}
+        open={dialogOpen}
+        bank={bank}
+        handleContinue={handleContinue}
+      />
+    </Grid>
   );
 }
 

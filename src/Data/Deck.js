@@ -1,7 +1,7 @@
-import Club from "../Photos/clubs1.png";
-import Heart from "../Photos/hearts1.png";
-import Diamond from "../Photos/diamond1.png";
-import Spade from "../Photos/spades1.png";
+import Club from "../Photos/club.png";
+import Heart from "../Photos/heart.png";
+import Diamond from "../Photos/diamond.png";
+import Spade from "../Photos/spade.png";
 import Back from "../Photos/back.png";
 
 export const Deck = [

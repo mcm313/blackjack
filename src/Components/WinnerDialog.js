@@ -20,7 +20,7 @@ function WinnerDialog({ winner, open, bank, handleContinue }) {
       <DialogActions>
         {bank <= 0 ? (
           <Link to="/">
-            <Button>Continue</Button>
+            <Button>Try Again</Button>
           </Link>
         ) : (
           <Button onClick={handleContinue}>Continue</Button>

@@ -30,6 +30,7 @@ function Game() {
 
   useEffect(() => {
     calculateWinner();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playerHand, endGame]);
 
   const handleToken = (value) => {
@@ -67,6 +68,9 @@ function Game() {
   };
 
   const handleDeal = () => {
+    if (bet === 0) {
+      return;
+    }
     setPlayerHand([...playerHand, randomCard(), randomCard()]);
     setDealerHand([...dealerHand, randomCard(), randomCard()]);
     setOnplay(true);
@@ -106,7 +110,7 @@ function Game() {
   };
 
   const handleWin = () => {
-    const updatedBet = bet * 2;
+    let updatedBet = bet * 2;
     if (totalChecker(playerHand) === totalChecker(dealerHand)) {
       updatedBet = bet;
     }
@@ -161,7 +165,13 @@ function Game() {
   };
 
   return (
-    <Grid container className="customMain" alignItems="start" p={3}>
+    <Grid
+      container
+      className="customMain"
+      alignItems="start"
+      p={3}
+      overflow="hidden"
+    >
       <Grid
         item
         xs={12}
@@ -170,7 +180,7 @@ function Game() {
         alignItems="center"
       >
         <Typography variant="body1">{onPlayDeck.length}</Typography>
-        <img src={cards} width="45px" />
+        <img src={cards} width="45px" alt="cards" />
       </Grid>
       <Grid item xs={12}>
         {onPlay && (

@@ -2,4 +2,143 @@
   height: 100vh;
   background-color: #055814;
   color: antiquewhite;
+  display: flex;
+  justify-content: center;
+}
+
+/*TOKENS*/
+.token {
+  position: relative;
+  display: inline-flex;
+  margin: 12px 10px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  line-height: 50px;
+  color: white;
+  z-index: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+.token:before {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: -7px;
+  border-radius: 50%;
+  border: 8px dashed white;
+  content: "";
+}
+
+.token:after {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: 8px;
+  border: 3px dashed white;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.4);
+  content: "";
+}
+
+#white {
+  border: 10px lightgray;
+}
+
+#white:before {
+  background: lightgray;
+}
+
+#red {
+  border: 10px red;
+}
+
+#red:before {
+  background: red;
+}
+
+#blue {
+  border: 10px blue;
+}
+
+#blue:before {
+  background: blue;
+}
+
+#green {
+  border: 10px green;
+}
+
+#green:before {
+  background: green;
+}
+
+#black {
+  border: 10px rgb(1, 1, 49);
+}
+
+#black:before {
+  background: rgb(1, 1, 49);
+}
+
+#purple {
+  border: 10px purple;
+}
+
+#purple:before {
+  background: purple;
+}
+
+#yellow {
+  border: 10px yellow;
+}
+
+#yellow:before {
+  background: yellow;
+}
+
+#orange {
+  border: 10px orange;
+}
+
+#orange:before {
+  background: orange;
+}
+
+#brown {
+  border: 10px brown;
+}
+
+#brown:before {
+  background: brown;
+}
+
+#lightblue {
+  border: 10px lightblue;
+}
+
+#lightblue:before {
+  background: lightblue;
+}
+
+/*CARDS*/
+.card {
+  position: relative;
+  display: inline-flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  margin: 12px -30px;
+  width: 100px;
+  height: 135px;
+  border-radius: 50%;
+  line-height: 50px;
+  color: white;
+  z-index: 0;
 }

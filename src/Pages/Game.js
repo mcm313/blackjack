@@ -97,6 +97,8 @@ function Game() {
     setEndGame(true);
   };
 
+  console.log("hello");
+
   const handleContinue = () => {
     setOnPlayDeck(copyDeck);
     setPlayerHand([]);
